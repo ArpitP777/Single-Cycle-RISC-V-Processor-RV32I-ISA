@@ -7,8 +7,9 @@ module cu(
     output wr_mem,
     output [2:0] alu_ctrl,
     output alu_sel,
-    output imm_sel,
+    output [1:0] imm_sel,
     output wr_reg,
+    input zero
 );
 
 
