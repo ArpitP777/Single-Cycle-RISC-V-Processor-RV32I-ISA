@@ -2,8 +2,8 @@ module registers(
     input clk,
     input [4:0] rs1,
     input [4:0] rs2,
-    output [31:0] rd_data1,
-    output [31:0] rd_data2,
+    output [31:0] rd_1,
+    output [31:0] rd_2,
     input w_en,
     input [31:0] w_data,
     input [4:0] rd
@@ -12,8 +12,8 @@ module registers(
     reg [31:0] registers [0:31];
 
     always @(*) begin
-        rd_data1 = registers[rs1];
-        rd_data2 = registers[rs2];
+        rd_1 = registers[rs1];
+        rd_2 = registers[rs2];
     end
 
     integer i;
