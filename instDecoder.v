@@ -1,3 +1,0 @@
-module instDecoder();
-    
-endmodule
