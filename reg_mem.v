@@ -1,4 +1,4 @@
-module registers(
+module reg_mem(
     input clk,
     input [4:0] rs1,
     input [4:0] rs2,
