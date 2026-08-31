@@ -14,13 +14,13 @@ module cu(
     input zero
 );
 
-    localparam R   = 7'b0110011;
-    localparam I   = 7'b0010011;
+    localparam R = 7'b0110011;
+    localparam I = 7'b0010011;
     localparam I_L = 7'b0000011;
     localparam I_J = 7'b1100111;
-    localparam S   = 7'b0100011;
-    localparam B   = 7'b1100011;
-    localparam J   = 7'b1101111;
+    localparam S = 7'b0100011;
+    localparam B = 7'b1100011;
+    localparam J = 7'b1101111;
 
     //ALU ctrl
     localparam ADD = 3'b000;

@@ -1,4 +1,5 @@
 module reg_mem(
+
     input clk,
     input [4:0] rs1,
     input [4:0] rs2,
@@ -7,6 +8,7 @@ module reg_mem(
     input w_en,
     input [31:0] w_data,
     input [4:0] rd
+    
 );
 
     reg [31:0] registers [0:31];

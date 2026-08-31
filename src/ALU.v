@@ -6,5 +6,4 @@ module alu(
     output zero
 );
 
-
 endmodule

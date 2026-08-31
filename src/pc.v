@@ -1,4 +1,5 @@
 module pc(
+    
     input clk,
     input [31:0] pc_next, // immediate or jump 
     input rst,
