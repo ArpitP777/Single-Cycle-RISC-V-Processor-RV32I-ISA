@@ -5,8 +5,8 @@ module reg_mem(
     input [4:0] rs2,
     output [31:0] rd_1,
     output [31:0] rd_2,
-    input w_en,
-    input [31:0] w_data,
+    input wr_reg,
+    input [31:0] result,
     input [4:0] rd
     
 );
@@ -26,8 +26,8 @@ module reg_mem(
                 registers[i] = 0;
             end
         end
-        else if(w_en && rd != 5'd0) begin
-            registers[rd] <= w_data;
+        else if(wr_reg && rd != 5'd0) begin
+            registers[rd] <= result;
         end
     end
 

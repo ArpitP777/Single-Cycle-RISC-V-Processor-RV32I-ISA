@@ -1,7 +1,7 @@
 module pc(
     
     input clk,
-    input [31:0] pc_next, // immediate or jump 
+    input [31:0] pc_next, // immediate/jump 
     input rst,
     output [31:0] pc
 );
