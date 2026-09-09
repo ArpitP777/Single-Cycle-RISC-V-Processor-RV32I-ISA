@@ -68,7 +68,7 @@ module cu(
                     3'b000: alu_ctrl = ADD;      // addi
                     3'b001: alu_ctrl = SLL;       // slli
                     3'b010: alu_ctrl = SLT;      // slti
-                    3'b011: alu_ctrl = SLTIU;       // sltiu
+                    3'b011: alu_ctrl = SLTU;       // sltiu
                     3'b100: alu_ctrl = XOR;      // xori
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srli / srai
                     3'b110: alu_ctrl = OR;     // ori
@@ -81,6 +81,7 @@ module cu(
                 result_sel = 1'b1;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
+                alu_ctrl = ADD;
             end
 
             I_J: begin // jalr
@@ -93,33 +94,34 @@ module cu(
                 wr_mem = 1'b1;
                 alu_sel = 1'b1;
                 imm_sel = 2'b01;
+                alu_ctrl = ADD;
             end
 
             B: begin    
                 imm_sel = 2'b10;
                 case (funct3)
                     3'b000: begin
-                        pc_sel = zero;  // beq
+                        pc_sel = !zero;  // beq
                         alu_ctrl = SUB;
                     end
                     3'b001: begin
-                        pc_sel = !zero; // bne
+                        pc_sel = zero; // bne
                         alu_ctrl = SUB;
                     end
-                    3'b010: begin
-                        pc_sel = less;  // blt
+                    3'b100: begin
+                        pc_sel = !less;  // blt
                         alu_ctrl = SLT;
                     end
-                    3'b011: begin
-                            pc_sel = !less;  //bge
+                    3'b101: begin
+                            pc_sel = less;  //bge
                             alu_ctrl = SLT;
                     end
-                    3'b100: begin
-                        pc_sel = less;  //bltu
+                    3'b110: begin
+                        pc_sel = !less;  //bltu
                         alu_ctrl = SLTU;
                     end
-                    3'b101: begin
-                        pc_sel = !less;  //bgeu
+                    3'b111: begin
+                        pc_sel = less;  //bgeu
                         alu_ctrl = SLTU;
                     end
                 endcase
