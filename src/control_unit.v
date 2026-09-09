@@ -99,12 +99,33 @@ module cu(
                 imm_sel = 2'b01;
             end
 
-            B: begin
-                alu_ctrl = SUB;
+            B: begin    
                 imm_sel = 2'b10;
                 case (funct3)
-                    3'b000: pc_sel = zero;  // beq
-                    3'b001: pc_sel = !zero; // bne
+                    3'b000: begin
+                        pc_sel = zero;  // beq
+                        alu_ctrl = SUB;
+                    end
+                    3'b001: begin
+                        pc_sel = !zero; // bne
+                        alu_ctrl = SUB;
+                    end
+                    3'b010: begin
+                        pc_sel = less;  // blt
+                        alu_ctrl = SLT;
+                    end
+                    3'b011: begin
+                            pc_sel = !less;  //bge
+                            alu_ctrl = SLT;
+                    end
+                    3'b100: begin
+                        pc_sel = less;  //bltu
+                        alu_ctrl = SLTU;
+                    end
+                    3'b101: begin
+                        pc_sel = !less;  //bgeu
+                        alu_ctrl = SLTU;
+                    end
                 endcase
             end
 
