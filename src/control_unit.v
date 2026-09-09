@@ -6,7 +6,7 @@ module cu(
     output reg pc_sel,
     output reg result_sel,
     output reg wr_mem,
-    output reg [3:0] alu_ctrl,
+    output reg [4:0] alu_ctrl,
     output reg alu_sel,
     output reg [1:0] imm_sel,
     output reg wr_reg,
@@ -33,11 +33,7 @@ module cu(
     localparam SRL = 3'b0110;
     localparam SRA = 3'b0111;
     localparam SLT = 3'b1000;
-    localparam SLTU = 3'b1001;
-    localparam BLT = 3'b1010;
-    localparam BLTU = 3'b1011;
-    localparam BGE = 3'b1100;
-    localparam BGEU = 3'b1101;
+    localparam SLTU = 3'b1001;  
 
 
     always @(*) begin
@@ -57,7 +53,7 @@ module cu(
                     3'b001: alu_ctrl = SLL;       // sll
                     3'b010: alu_ctrl = SLT;       // slt
                     3'b011: alu_ctrl = SLTU;        // sltu
-                    3'b100: alu_ctrl = XOR        // xor
+                    3'b100: alu_ctrl = XOR;       // xor
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srl / sra
                     3'b110: alu_ctrl = OR;          // or
                     3'b111: alu_ctrl = AND;         // and
