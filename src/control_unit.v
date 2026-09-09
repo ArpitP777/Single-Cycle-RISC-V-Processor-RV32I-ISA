@@ -6,12 +6,13 @@ module cu(
     output reg pc_sel,
     output reg result_sel,
     output reg wr_mem,
-    output reg [2:0] alu_ctrl,
+    output reg [3:0] alu_ctrl,
     output reg alu_sel,
     output reg [1:0] imm_sel,
     output reg wr_reg,
 
     input zero
+    input less
 );
 
     localparam R = 7'b0110011;
@@ -23,14 +24,20 @@ module cu(
     localparam J = 7'b1101111;
 
     //ALU ctrl
-    localparam ADD = 3'b000;
-    localparam SUB = 3'b001;
-    localparam AND = 3'b010;
-    localparam OR  = 3'b011;
-    localparam XOR = 3'b100;
-    localparam SLL = 3'b101;
-    localparam SRL = 3'b110;
-    localparam SRA = 3'b111;
+    localparam ADD = 3'b0000;
+    localparam SUB = 3'b0001;
+    localparam AND = 3'b0010;
+    localparam OR  = 3'b0011;
+    localparam XOR = 3'b0100;
+    localparam SLL = 3'b0101;
+    localparam SRL = 3'b0110;
+    localparam SRA = 3'b0111;
+    localparam SLT = 3'b1000;
+    localparam SLTU = 3'b1001;
+    localparam BLT = 3'b1010;
+    localparam BLTU = 3'b1011;
+    localparam BGE = 3'b1100;
+    localparam BGEU = 3'b1101;
 
 
     always @(*) begin
@@ -48,8 +55,8 @@ module cu(
                 case (funct3)
                     3'b000: alu_ctrl = (funct7 == 7'b0000000)?ADD:SUB; // add / sub
                     3'b001: alu_ctrl = SLL;       // sll
-                    3'b010: alu_ctrl = SUB;       // slt
-                    3'b011: alu_ctrl = SUB;        // sltu
+                    3'b010: alu_ctrl = SLT;       // slt
+                    3'b011: alu_ctrl = SLTU;        // sltu
                     3'b100: alu_ctrl = XOR        // xor
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srl / sra
                     3'b110: alu_ctrl = OR;          // or
@@ -64,8 +71,8 @@ module cu(
                 case (funct3)
                     3'b000: alu_ctrl = ADD;      // addi
                     3'b001: alu_ctrl = SLL;       // slli
-                    3'b010: alu_ctrl = SUB;      // slti
-                    3'b011: alu_ctrl = SUB;       // sltiu
+                    3'b010: alu_ctrl = SLT;      // slti
+                    3'b011: alu_ctrl = SLTIU;       // sltiu
                     3'b100: alu_ctrl = XOR;      // xori
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srli / srai
                     3'b110: alu_ctrl = OR;     // ori
