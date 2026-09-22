@@ -24,16 +24,16 @@ module cu(
     localparam J = 7'b1101111;
 
     //ALU ctrl
-    localparam ADD = 3'b0000;
-    localparam SUB = 3'b0001;
-    localparam AND = 3'b0010;
-    localparam OR  = 3'b0011;
-    localparam XOR = 3'b0100;
-    localparam SLL = 3'b0101;
-    localparam SRL = 3'b0110;
-    localparam SRA = 3'b0111;
-    localparam SLT = 3'b1000;
-    localparam SLTU = 3'b1001;  
+    localparam ADD = 4'b0000;
+    localparam SUB = 4'b0001;
+    localparam AND = 4'b0010;
+    localparam OR  = 4'b0011;
+    localparam XOR = 4'b0100;
+    localparam SLL = 4'b0101;
+    localparam SRL = 4'b0110;
+    localparam SRA = 4'b0111;
+    localparam SLT = 4'b1000;
+    localparam SLTU = 4'b1001;  
 
 
     always @(*) begin
@@ -84,7 +84,7 @@ module cu(
                 alu_ctrl = ADD;
             end
 
-            I_J: begin // jalr
+            I_J: begin // jal
                 pc_sel = 1'b1;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
