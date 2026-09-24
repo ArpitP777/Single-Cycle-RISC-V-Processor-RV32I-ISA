@@ -11,7 +11,7 @@ module cu(
     output reg [1:0] imm_sel,
     output reg wr_reg,
 
-    input zero
+    input zero,
     input less
 );
 
