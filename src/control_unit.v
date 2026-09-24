@@ -6,7 +6,7 @@ module cu(
     output reg pc_sel,
     output reg result_sel,
     output reg wr_mem,
-    output reg [4:0] alu_ctrl,
+    output reg [3:0] alu_ctrl,
     output reg alu_sel,
     output reg [1:0] imm_sel,
     output reg wr_reg,

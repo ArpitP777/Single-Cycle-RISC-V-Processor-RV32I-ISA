@@ -3,11 +3,12 @@ module reg_mem(
     input clk,
     input [4:0] rs1,
     input [4:0] rs2,
-    output [31:0] rd_1,
-    output [31:0] rd_2,
+    output reg [31:0] rd_1,
+    output reg [31:0] rd_2,
     input wr_reg,
     input [31:0] result,
-    input [4:0] rd
+    input [4:0] rd,
+    input rst
     
 );
 
