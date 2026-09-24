@@ -128,7 +128,7 @@ module cu(
             end
 
             J: begin // jal
-                pc_sel = 1'b1;
+                pc_sel = 1'b0;
                 alu_sel = 1'b1;
                 imm_sel = 2'b11;
                 wr_reg = 1'b1;
