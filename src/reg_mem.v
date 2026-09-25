@@ -24,7 +24,7 @@ module reg_mem(
     always @(posedge clk) begin
         if(rst) begin
             for(i = 0; i<32; i++) begin
-                registers[i] = 0;
+                registers[i] <= 0;
             end
         end
         else if(wr_reg && rd != 5'd0) begin
