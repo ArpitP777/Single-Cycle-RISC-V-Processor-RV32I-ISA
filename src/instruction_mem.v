@@ -1,4 +1,4 @@
-module inst_reg(
+module inst_mem(
     input [31:0] pc,
     output reg [31:0] inst
 );

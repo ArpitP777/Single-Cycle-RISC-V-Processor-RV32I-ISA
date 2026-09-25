@@ -1,5 +1,3 @@
-`include "mux.v"
-
 module pc_mux(
     input [1:0] pc_sel,
     input [31:0] pc,
