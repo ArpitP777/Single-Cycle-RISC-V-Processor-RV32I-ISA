@@ -33,7 +33,7 @@ module top(
     wire result_sel;
     wire wr_mem;
     wire alu_sel;
-    wire wr_wire;
+    wire wr_reg;
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
     wire [6:0] opcode = instr[6:0];
@@ -79,7 +79,7 @@ module top(
         .rs2(rs2),
         .rd_1(rd1),
         .rd_2(rd2),
-        .wr_wire(wr_wire),
+        .wr_reg(wr_reg),
         .result(result),
         .rd(rd),
         .rst(rst)
@@ -101,7 +101,7 @@ module top(
         .alu_ctrl(alu_ctrl),
         .alu_sel(alu_sel),
         .imm_sel(imm_sel),
-        .wr_wire(wr_wire),
+        .wr_reg(wr_reg),
         .zero(zero),
         .less(less)
     );

@@ -21,6 +21,7 @@ module alu(
     always@(*) begin
         less = 1'b0;
         zero = 1'b0;
+        alu_out = 32'd0;
         case(alu_ctrl)
                 ADD: alu_out = a+b;
                 SUB: begin
