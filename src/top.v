@@ -2,8 +2,7 @@
 
 module top(
     input clk,
-    input rst,
-    output reg [31:0] result
+    input rst
 );
     // pc
     wire [31:0] pc_next;
@@ -11,9 +10,9 @@ module top(
     wire [31:0] pc;
 
     // instruction memory
-    wire [31:0] instr,
-    wire [4:0] rs1 = instr[24:20];
-    wire [4:0] rs2 = instr[19:15];
+    wire [31:0] instr;
+    wire [4:0] rs1 = instr[19:15];
+    wire [4:0] rs2 = instr[24:20];
     wire [4:0] rd = instr[11:7];
 
     // alu
@@ -30,6 +29,7 @@ module top(
     wire [31:0] imm_out;
     
     // control signals & result
+    wire [31:0] result;
     wire result_sel;
     wire wr_mem;
     wire alu_sel;
@@ -73,7 +73,7 @@ module top(
         .inst(instr)
     );
 
-    wire_mem inst3(
+    reg_mem inst3(
         .clk(clk),
         .rs1(rs1),
         .rs2(rs2),
