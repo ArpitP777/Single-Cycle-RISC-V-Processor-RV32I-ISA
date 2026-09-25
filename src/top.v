@@ -1,44 +1,43 @@
 `include "mux.v"
 
 module top(
-    input [31:0] instr,
     input clk,
     input rst,
-    output [31:0] result
+    output reg [31:0] result
 );
     // pc
-    reg [31:0] pc_next;
-    reg [1:0] pc_sel;
-    reg [31:0] pc;
+    wire [31:0] pc_next;
+    wire [1:0] pc_sel;
+    wire [31:0] pc;
 
     // instruction memory
-    reg [4:0] rs1 = inst[24:20];
-    reg [4:0] rs2 = inst[19:15];
-    reg [4:0] rd = inst[11:7];
+    wire [31:0] instr,
+    wire [4:0] rs1 = instr[24:20];
+    wire [4:0] rs2 = instr[19:15];
+    wire [4:0] rd = instr[11:7];
 
     // alu
-    reg [31:0] rd1;
-    reg [31:0] rd2;
-    reg [2:0] alu_ctrl;
-    reg [31:0] alu_out;
-    reg zero;
-    reg less;
-    reg [31:0] alu_in;
+    wire [31:0] rd1;
+    wire [31:0] rd2;
+    wire [3:0] alu_ctrl;
+    wire [31:0] alu_out;
+    wire zero;
+    wire less;
+    wire [31:0] alu_in;
 
     // immediate generator
-    reg [24:0] imm;
-    reg [1:0] imm_sel;
-    reg [24:0] imm_out;
+    wire [1:0] imm_sel;
+    wire [31:0] imm_out;
     
     // control signals & result
-    reg result_sel;
-    reg wr_mem;
-    reg alu_sel;
-    reg wr_reg;
-    reg [2:0] funct3 = inst[14:12];
-    reg [6:0] funct7 = inst[31:25];
-    reg [6:0] opcode = inst[6:0];
-    reg [31:0] rd_data;
+    wire result_sel;
+    wire wr_mem;
+    wire alu_sel;
+    wire wr_wire;
+    wire [2:0] funct3 = instr[14:12];
+    wire [6:0] funct7 = instr[31:25];
+    wire [6:0] opcode = instr[6:0];
+    wire [31:0] rd_data;
 
     pc_mux pmux(
         .pc_sel(pc_sel),
@@ -74,13 +73,13 @@ module top(
         .inst(instr)
     );
 
-    reg_mem inst3(
+    wire_mem inst3(
         .clk(clk),
         .rs1(rs1),
         .rs2(rs2),
         .rd_1(rd1),
         .rd_2(rd2),
-        .wr_reg(wr_reg),
+        .wr_wire(wr_wire),
         .result(result),
         .rd(rd),
         .rst(rst)
@@ -102,7 +101,7 @@ module top(
         .alu_ctrl(alu_ctrl),
         .alu_sel(alu_sel),
         .imm_sel(imm_sel),
-        .wr_reg(wr_reg),
+        .wr_wire(wr_wire),
         .zero(zero),
         .less(less)
     );
