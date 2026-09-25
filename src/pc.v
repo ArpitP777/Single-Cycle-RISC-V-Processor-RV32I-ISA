@@ -1,9 +1,9 @@
 module pc(
-    
+
     input clk,
     input [31:0] pc_next, // immediate/jump 
     input rst,
-    output [31:0] pc
+    output reg [31:0] pc
 );
 
     always@(posedge clk) begin
