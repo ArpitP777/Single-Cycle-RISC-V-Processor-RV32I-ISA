@@ -1,12 +1,17 @@
 module pc_mux(
-    input pc_sel,
+    input [1:0] pc_sel,
     input [31:0] pc,
     input [31:0] imm_out,
+    input [31:0] alu_out,
     output reg [31:0] pc_next
 );
 
     always@(*) begin
-        pc_next = pc_sel?(pc + 4):(pc + imm_out);
+        case(pc_sel) 
+            2'b01: pc_next <= pc + 4;
+            2'b00: pc_next <= pc + imm_out;
+            2'b10: pc_next <= pc + alu_out;
+        endcase
     end
 endmodule
 

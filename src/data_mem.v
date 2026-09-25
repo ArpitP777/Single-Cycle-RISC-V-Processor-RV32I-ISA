@@ -7,13 +7,14 @@ module data_mem(
     output reg [31:0] rd_data
 );
     //funct3
-    localparam LB  = 3'b000;   // sb
-    localparam LH  = 3'b001;   // sh
-    localparam LW  = 3'b010;   // sw
+    localparam mem_size = 1023;
+    localparam LB = 3'b000;   // sb
+    localparam LH = 3'b001;   // sh
+    localparam LW = 3'b010;   // sw
     localparam LBU = 3'b100;
     localparam LHU = 3'b101;
 
-    reg [7:0]mem [0:1023];    // 1024x8 = 1KB, byte addressable
+    reg [7:0]mem [0:mem_size];    // 1024x8 = 1KB, byte addressable
 
     wire [9:0]addr = alu_out[9:0];
 
@@ -23,8 +24,8 @@ module data_mem(
             LBU: rd_data = {24'b0, mem[addr]}; 
             LH: rd_data = {{16{mem[addr+1][7]}}, mem[addr+1], mem[addr]};           //half
             LHU: rd_data = {16'b0, mem[addr+1], mem[addr]};
-            LW: rd_data = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};       // full word
-            default: rd_data = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};
+            LW: rd_data = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};       //full word for last address + 1 th instruction it is fetched from the starting address
+            default: rd_data = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};   
         endcase
     end
 

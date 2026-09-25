@@ -3,7 +3,7 @@ module cu(
     input [2:0] funct3,
     input [6:0] opcode,
 
-    output reg pc_sel,
+    output reg [1:0] pc_sel,
     output reg result_sel,
     output reg wr_mem,
     output reg [3:0] alu_ctrl,
@@ -37,7 +37,7 @@ module cu(
 
 
     always @(*) begin
-        pc_sel = 1'b0;
+        pc_sel = 2'b01;
         result_sel = 1'b0;
         wr_mem = 1'b0;
         alu_ctrl = ADD;
@@ -85,7 +85,7 @@ module cu(
             end
 
             I_J: begin // jal
-                pc_sel = 1'b1;
+                pc_sel = 2'b00;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
             end
@@ -101,34 +101,34 @@ module cu(
                 imm_sel = 2'b10;
                 case (funct3)
                     3'b000: begin
-                        pc_sel = !zero;  // beq
+                        pc_sel = (zero)?2'b01:2'b00;  // beq
                         alu_ctrl = SUB;
                     end
                     3'b001: begin
-                        pc_sel = zero; // bne
+                        pc_sel = (zero)?2'b01:2'b00;  // bne
                         alu_ctrl = SUB;
                     end
                     3'b100: begin
-                        pc_sel = !less;  // blt
+                        pc_sel = (less)?2'b00:2'b01;  // blt
                         alu_ctrl = SLT;
                     end
                     3'b101: begin
-                            pc_sel = less;  //bge
-                            alu_ctrl = SLT;
+                        pc_sel = (less)?2'b01:2'b00;  //bge
+                        alu_ctrl = SLT;
                     end
                     3'b110: begin
-                        pc_sel = !less;  //bltu
+                        pc_sel = (less)?2'b00:2'b01;  //bltu
                         alu_ctrl = SLTU;
                     end
                     3'b111: begin
-                        pc_sel = less;  //bgeu
+                        pc_sel = (less)?2'b01:2'b00;  //bgeu
                         alu_ctrl = SLTU;
                     end
                 endcase
             end
 
-            J: begin // jal
-                pc_sel = 1'b0;
+            J: begin // jalr
+                pc_sel = 2'b10;
                 alu_sel = 1'b1;
                 imm_sel = 2'b11;
                 wr_reg = 1'b1;
