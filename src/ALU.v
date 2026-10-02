@@ -33,7 +33,7 @@ module alu(
                 XOR: alu_out = a^b;
                 SLL: alu_out = a<<b[4:0];
                 SRL: alu_out = a>>b[4:0];
-                SRA: alu_out = $signed(a)>>>b;
+                SRA: alu_out = $signed(a)>>>b[4:0];
                 SLT: begin
                     less = ($signed(a)<$signed(b));
                     alu_out = less?32'b1:32'b0;
