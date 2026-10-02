@@ -23,7 +23,7 @@ module reg_mem(
     
     always @(posedge clk) begin
         if(rst) begin
-            for(i = 0; i<32; i++) begin
+            for(i = 0; i<32; i = i + 1) begin
                 registers[i] <= 0;
             end
         end

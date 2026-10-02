@@ -86,6 +86,7 @@ module cu(
 
             I_J: begin // jal
                 pc_sel = 2'b00;
+                imm_sel = 2'b11;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
             end
@@ -101,7 +102,7 @@ module cu(
                 imm_sel = 2'b10;
                 case (funct3)
                     3'b000: begin
-                        pc_sel = (zero)?2'b01:2'b00;  // beq
+                        pc_sel = (zero)?2'b00:2'b01;  // beq
                         alu_ctrl = SUB;
                     end
                     3'b001: begin
@@ -130,7 +131,6 @@ module cu(
             J: begin // jalr
                 pc_sel = 2'b10;
                 alu_sel = 1'b1;
-                imm_sel = 2'b11;
                 wr_reg = 1'b1;
             end
         endcase
