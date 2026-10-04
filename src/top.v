@@ -25,16 +25,15 @@ module top(
     wire [31:0] alu_in;
 
     // immediate generator
-    wire [1:0] imm_sel;
+    wire [2:0] imm_sel;
     wire [31:0] imm_out;
     
     // control signals & result
     wire a_sel;
     wire [31:0] alu_a;
-    wire pc_plus4 = pc + 32'd4;
+    wire [31:0] pc_plus4 = pc + 32'd4;
     wire [1:0] result_sel;
     wire [31:0] result;
-    wire [1:0] result_sel;
     wire wr_mem;
     wire alu_sel;
     wire wr_reg;
@@ -105,6 +104,7 @@ module top(
     );
 
     cu inst5(
+        .a_sel(a_sel),
         .funct7(funct7),
         .funct3(funct3),
         .opcode(opcode),

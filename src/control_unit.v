@@ -23,7 +23,8 @@ module cu(
     localparam S = 7'b0100011;
     localparam B = 7'b1100011;
     localparam J = 7'b1100111;
-    localparam U = 7'b0010111;
+    localparam LUI = 7'b0110111;
+    localparam AUIPC = 7'b0010111;
 
     //ALU ctrl
     localparam ADD = 4'b0000;
@@ -38,7 +39,7 @@ module cu(
     localparam SLTU = 4'b1001;  
 
 
-    always @(*) begin
+    always@(*) begin
         pc_sel = 2'b01;
         result_sel = 2'b00;
         wr_mem = 1'b0;
@@ -136,20 +137,23 @@ module cu(
                 pc_sel = 2'b10;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
+                result_sel = 2'b10;
             end
 
             LUI: begin
                 result_sel = 2'b11;
                 wr_reg = 1'b1;
+                imm_sel = 3'b100;
             end
 
             AUIPC: begin
+                imm_sel = 3'b100;
                 a_sel = 1'b1;
                 alu_sel = 1'b1;
                 result_sel = 2'b00;
                 wr_reg = 1'b1;
             end
-            
+
         endcase
     end
 

@@ -8,10 +8,10 @@ module pc_mux(
 
     always@(*) begin
         case(pc_sel) 
-            2'b01: pc_next <= pc + 4;
-            2'b00: pc_next <= pc + imm_out;
-            2'b10: pc_next <= alu_out;
-            default: pc_next <= pc + 4;
+            2'b01: pc_next = pc + 4;
+            2'b00: pc_next = pc + imm_out;
+            2'b10: pc_next = alu_out;
+            default: pc_next = pc + 4;
         endcase
     end
 endmodule
