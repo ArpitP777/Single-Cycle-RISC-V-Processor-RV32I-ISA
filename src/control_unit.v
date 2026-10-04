@@ -36,11 +36,9 @@ module cu(
     localparam SRL = 4'b0110;
     localparam SRA = 4'b0111;
     localparam SLT = 4'b1000;
-    localparam SLTU = 4'b1001;  
+    localparam SLTU = 4'b1001;
 
-
-    always@(*) begin
-        pc_sel = 2'b01;
+    always @(*) begin
         result_sel = 2'b00;
         wr_mem = 1'b0;
         alu_ctrl = ADD;
@@ -56,11 +54,11 @@ module cu(
                     3'b000: alu_ctrl = (funct7 == 7'b0000000)?ADD:SUB; // add / sub
                     3'b001: alu_ctrl = SLL;       // sll
                     3'b010: alu_ctrl = SLT;       // slt
-                    3'b011: alu_ctrl = SLTU;        // sltu
+                    3'b011: alu_ctrl = SLTU;      // sltu
                     3'b100: alu_ctrl = XOR;       // xor
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srl / sra
-                    3'b110: alu_ctrl = OR;          // or
-                    3'b111: alu_ctrl = AND;         // and
+                    3'b110: alu_ctrl = OR;        // or
+                    3'b111: alu_ctrl = AND;       // and
                     default: alu_ctrl = ADD;
                 endcase
             end
@@ -69,13 +67,13 @@ module cu(
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
                 case (funct3)
-                    3'b000: alu_ctrl = ADD;      // addi
+                    3'b000: alu_ctrl = ADD;       // addi
                     3'b001: alu_ctrl = SLL;       // slli
-                    3'b010: alu_ctrl = SLT;      // slti
-                    3'b011: alu_ctrl = SLTU;       // sltiu
-                    3'b100: alu_ctrl = XOR;      // xori
+                    3'b010: alu_ctrl = SLT;       // slti
+                    3'b011: alu_ctrl = SLTU;      // sltiu
+                    3'b100: alu_ctrl = XOR;       // xori
                     3'b101: alu_ctrl = (funct7 == 7'b0000000)?SRL:SRA; // srli / srai
-                    3'b110: alu_ctrl = OR;     // ori
+                    3'b110: alu_ctrl = OR;        // ori
                     3'b111: alu_ctrl = AND;       // andi
                     default: alu_ctrl = ADD;
                 endcase
@@ -89,7 +87,6 @@ module cu(
             end
 
             I_J: begin // jal
-                pc_sel = 2'b00;
                 imm_sel = 3'b011;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
@@ -103,38 +100,20 @@ module cu(
                 alu_ctrl = ADD;
             end
 
-            B: begin    
+            B: begin // only pick the ALU compare operation here
                 imm_sel = 3'b010;
-                case (funct3)
-                    3'b000: begin
-                        pc_sel = (zero)?2'b00:2'b01;  // beq
-                        alu_ctrl = SUB;
-                    end
-                    3'b001: begin
-                        pc_sel = (zero)?2'b01:2'b00;  // bne
-                        alu_ctrl = SUB;
-                    end
-                    3'b100: begin
-                        pc_sel = (less)?2'b00:2'b01;  // blt
-                        alu_ctrl = SLT;
-                    end
-                    3'b101: begin
-                        pc_sel = (less)?2'b01:2'b00;  //bge
-                        alu_ctrl = SLT;
-                    end
-                    3'b110: begin
-                        pc_sel = (less)?2'b00:2'b01;  //bltu
-                        alu_ctrl = SLTU;
-                    end
-                    3'b111: begin
-                        pc_sel = (less)?2'b01:2'b00;  //bgeu
-                        alu_ctrl = SLTU;
-                    end
+                case(funct3)
+                    3'b000: alu_ctrl = SUB;   // beq
+                    3'b001: alu_ctrl = SUB;   // bne
+                    3'b100: alu_ctrl = SLT;   // blt
+                    3'b101: alu_ctrl = SLT;   // bge
+                    3'b110: alu_ctrl = SLTU;  // bltu
+                    3'b111: alu_ctrl = SLTU;  // bgeu
+                    default: alu_ctrl = SUB;
                 endcase
             end
 
             J: begin // jalr
-                pc_sel = 2'b10;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
                 result_sel = 2'b10;
@@ -154,6 +133,26 @@ module cu(
                 wr_reg = 1'b1;
             end
 
+        endcase
+    end
+
+    always @(*) begin
+        pc_sel = 2'b01;
+        case (opcode)
+            I_J: pc_sel = 2'b00;   // jal
+            J:   pc_sel = 2'b10;   // jalr
+            B: begin
+                case (funct3)
+                    3'b000: pc_sel = zero ? 2'b00 : 2'b01;  // beq
+                    3'b001: pc_sel = zero ? 2'b01 : 2'b00;  // bne
+                    3'b100: pc_sel = less ? 2'b00 : 2'b01;  // blt
+                    3'b101: pc_sel = less ? 2'b01 : 2'b00;  // bge
+                    3'b110: pc_sel = less ? 2'b00 : 2'b01;  // bltu
+                    3'b111: pc_sel = less ? 2'b01 : 2'b00;  // bgeu
+                    default: pc_sel = 2'b01;
+                endcase
+            end
+            default: pc_sel = 2'b01;
         endcase
     end
 
