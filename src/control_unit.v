@@ -4,11 +4,12 @@ module cu(
     input [6:0] opcode,
 
     output reg [1:0] pc_sel,
-    output reg result_sel,
+    output reg [1:0] result_sel,
     output reg wr_mem,
     output reg [3:0] alu_ctrl,
     output reg alu_sel,
-    output reg [1:0] imm_sel,
+    output reg a_sel,
+    output reg [2:0] imm_sel,
     output reg wr_reg,
 
     input zero,
@@ -22,6 +23,7 @@ module cu(
     localparam S = 7'b0100011;
     localparam B = 7'b1100011;
     localparam J = 7'b1100111;
+    localparam U = 7'b0010111;
 
     //ALU ctrl
     localparam ADD = 4'b0000;
@@ -38,12 +40,13 @@ module cu(
 
     always @(*) begin
         pc_sel = 2'b01;
-        result_sel = 1'b0;
+        result_sel = 2'b00;
         wr_mem = 1'b0;
         alu_ctrl = ADD;
         alu_sel = 1'b0;
-        imm_sel = 2'b00;
+        imm_sel = 3'b000;
         wr_reg = 1'b0;
+        a_sel = 1'b0;
 
         case(opcode)
             R: begin
@@ -78,7 +81,7 @@ module cu(
             end
 
             I_L: begin // load
-                result_sel = 1'b1;
+                result_sel = 2'b01;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
                 alu_ctrl = ADD;
@@ -86,20 +89,21 @@ module cu(
 
             I_J: begin // jal
                 pc_sel = 2'b00;
-                imm_sel = 2'b11;
+                imm_sel = 3'b011;
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
+                result_sel = 2'b10;
             end
 
             S: begin // store
                 wr_mem = 1'b1;
                 alu_sel = 1'b1;
-                imm_sel = 2'b01;
+                imm_sel = 3'b001;
                 alu_ctrl = ADD;
             end
 
             B: begin    
-                imm_sel = 2'b10;
+                imm_sel = 3'b010;
                 case (funct3)
                     3'b000: begin
                         pc_sel = (zero)?2'b00:2'b01;  // beq
@@ -133,6 +137,19 @@ module cu(
                 alu_sel = 1'b1;
                 wr_reg = 1'b1;
             end
+
+            LUI: begin
+                result_sel = 2'b11;
+                wr_reg = 1'b1;
+            end
+
+            AUIPC: begin
+                a_sel = 1'b1;
+                alu_sel = 1'b1;
+                result_sel = 2'b00;
+                wr_reg = 1'b1;
+            end
+            
         endcase
     end
 

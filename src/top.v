@@ -29,8 +29,12 @@ module top(
     wire [31:0] imm_out;
     
     // control signals & result
+    wire a_sel;
+    wire [31:0] alu_a;
+    wire pc_plus4 = pc + 32'd4;
+    wire [1:0] result_sel;
     wire [31:0] result;
-    wire result_sel;
+    wire [1:0] result_sel;
     wire wr_mem;
     wire alu_sel;
     wire wr_reg;
@@ -47,6 +51,13 @@ module top(
         .pc_next(pc_next)
     );
 
+    alu_a_mux alu_amux(
+        .a_sel(a_sel),
+        .rd1(rd1),
+        .pc(pc),
+        .in_a(alu_a)
+    );
+
     alu_mux alumux(
         .alu_sel(alu_sel),
         .rd2(rd2),
@@ -58,6 +69,8 @@ module top(
         .result_sel(result_sel),
         .alu_out(alu_out),
         .rd_data(rd_data),
+        .pc_plus4(pc_plus4),
+        .imm_out(imm_out),
         .result(result)
     );
 
@@ -107,7 +120,7 @@ module top(
     );
 
     alu inst6(
-        .a(rd1),
+        .a(alu_a),
         .b(alu_in),
         .alu_ctrl(alu_ctrl),
         .alu_out(alu_out),

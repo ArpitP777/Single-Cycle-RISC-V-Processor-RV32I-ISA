@@ -29,15 +29,45 @@ module alu_mux(
 
 endmodule
 
+// module result_mux(
+//     input result_sel,
+//     input [31:0] alu_out,
+//     input [31:0] rd_data,
+//     output reg [31:0] result
+// );
+
+//     always@(*) begin
+//         result = result_sel?(rd_data):(alu_out);
+//     end
+
+// endmodule
+
 module result_mux(
-    input result_sel,
+    input [1:0] result_sel,
     input [31:0] alu_out,
     input [31:0] rd_data,
+    input [31:0] pc_plus4,
+    input [31:0] imm_out,
     output reg [31:0] result
 );
-
     always@(*) begin
-        result = result_sel?(rd_data):(alu_out);
+        case (result_sel)
+            2'b00: result = alu_out;    // r,i,alu,auipc
+            2'b01: result = rd_data;    // load
+            2'b10: result = pc_plus4;   // jal or jalr link address
+            2'b11: result = imm_out;    // LUI
+            default: result = alu_out;
+        endcase
     end
+endmodule
 
+module alu_a_mux(
+    input a_sel,
+    input [31:0] rd1,
+    input [31:0] pc,
+    output reg [31:0] in_a
+);
+    always@(*) begin
+        in_a = a_sel?pc:rd1;
+    end
 endmodule
