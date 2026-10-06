@@ -12,9 +12,9 @@ A single-cycle 32-bit RISC-V processor written in Verilog HDL, with self-checkin
 - Modular design: each block is its own module
 - Two self-checking testbenches with PASS/FAIL reporting and waveform dumps
 
-## Block Diagram
+## Architecture
 
-![Block diagram](docs/risc-v_dark.jpg)
+![Architecture](docs/risc-v_dark.jpg)
 
 The control unit decodes `opcode`, `funct3` and `funct7`, and uses the ALU's `zero` and `less` flags to choose the next PC for branches. Two muxes in front of the ALU select its operands (`rd1` or `pc`, and `rd2` or the immediate), and a 4-way mux selects what is written back to the register file.
 
@@ -23,17 +23,17 @@ The control unit decodes `opcode`, `funct3` and `funct7`, and uses the ALU's `ze
 ```
 .
 ├── src/
-│   ├── top.v              # top-level module
-│   ├── pc.v               # program counter
-│   ├── instruction_mem.v  # instruction memory (256 x 32-bit)
-│   ├── reg_mem.v          # register file (32 x 32-bit)
-│   ├── immediate_gen.v    # immediate generator (I/S/B/J/U)
-│   ├── control_unit.v     # control logic
-│   ├── ALU.v              # arithmetic logic unit
-│   ├── data_mem.v         # data memory (1 KB, byte addressable)
-│   ├── mux.v              # pc_mux, alu_a_mux, alu_mux, result_mux
-│   ├── tb.v               # testbench 1: add, gcd, fibonacci
-│   └── tb2.v              # testbench 2: lui, auipc, jalr
+│   ├── top.v          
+│   ├── pc.v            
+│   ├── instruction_mem.v 
+│   ├── reg_mem.v        
+│   ├── immediate_gen.v    
+│   ├── control_unit.v    
+│   ├── ALU.v              
+│   ├── data_mem.v        
+│   ├── mux.v              
+│   ├── tb.v              
+│   └── tb2.v              
 ├── DOCS/
 │   └── risc-v_dark.jpg
 ├── SIM/
@@ -228,10 +228,9 @@ The two testbenches exercise `addi`, `add`, `sub`, `lw`, `sw`, `beq`, `blt`, `ja
 
 ## Future Work
 
-- Add the CSR file and system instructions
+- Using the processor for Channel Noise estimation
 - Fix the `jalr` target alignment
 - Add tests for the remaining instructions
-- Load programs from a hex file
 - Extend to a 5-stage pipeline with hazard handling
 
 ## Tools
