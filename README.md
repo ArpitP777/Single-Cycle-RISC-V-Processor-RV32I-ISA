@@ -14,7 +14,7 @@ A single-cycle 32-bit RISC-V processor written in Verilog HDL, with self-checkin
 
 ## Block Diagram
 
-![Block diagram](DOCS/risc-v_dark.jpg)
+![Block diagram](docs/risc-v_dark.jpg)
 
 The control unit decodes `opcode`, `funct3` and `funct7`, and uses the ALU's `zero` and `less` flags to choose the next PC for branches. Two muxes in front of the ALU select its operands (`rd1` or `pc`, and `rd2` or the immediate), and a 4-way mux selects what is written back to the register file.
 
