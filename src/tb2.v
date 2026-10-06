@@ -56,7 +56,7 @@ module tb2;
 
     initial begin
         $dumpfile("cpu2.vcd");
-        $dumpvars(0, tb_lui_auipc_jalr);
+        $dumpvars(0, tb2);
 
         // lui
         $display("\nTEST 1: lui");
